@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import BACtrackAPI.API.BACtrackAPI;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
     private Button mConnectBreathalyzerButton;
     private Button mStartBlowButton;
     private TextView mStateTextView;
+    private EditText mThresholdEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class MainActivity extends Activity {
 
         mStateTextView = (TextView) findViewById(R.id.state_textView);
         mStateTextView.setText("Disconnected");
+
+        mThresholdEditText = (EditText) findViewById(R.id.threshold_editText);
     }
 
     View.OnClickListener mConnectBreathalyzerButtonClickListener = new View.OnClickListener() {
@@ -84,6 +88,16 @@ public class MainActivity extends Activity {
             }
         }
     };
+
+    private Float getThresholdValue() {
+        Float value = null;
+        try {
+            value = Float.parseFloat(mThresholdEditText.getText().toString());
+        } catch (Exception e) {
+            Log.d("DEGUG", "Get threshold value failed!");
+        }
+        return value;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -168,7 +182,16 @@ public class MainActivity extends Activity {
 
         @Override
         public void BACtrackResults(float result) {
-            setStates("Result: " + result);
+            Float thresHold = getThresholdValue();
+            if (thresHold != null) {
+                if (result > thresHold) {
+                    setStates("You Drink TOO MUCH!");
+                } else {
+                    setStates("You are OK!");
+                }
+            } else {
+                setStates("Result: " + result);
+            }
         }
 
         @Override

@@ -19,12 +19,22 @@
         android:layout_below="@id/connect_button"
         android:text="Start Blow"/>
 
+
     <TextView
         android:id="@+id/state_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="24sp"/>
+
+    <EditText
+        android:id="@+id/threshold_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/state_textView"
+        android:hint="Please set threshold"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center" />
 
 
 </RelativeLayout>
